@@ -1,0 +1,8 @@
+2015-02-24 15:50:47 Test, server startad of type: N/A N/A logged in.
+2015-02-24 15:50:52 clientkeystore of type: user successfully logged in.
+2015-02-24 15:54:59 Test, server startad of type: N/A N/A logged in.
+2015-02-24 15:55:02 clientkeystore of type: user successfully logged in.
+2015-02-24 15:58:05 Test, server startad of type: N/A N/A logged in.
+2015-02-24 15:58:08 clientkeystore of type: user successfully logged in.
+2015-02-24 16:00:29 Test, server startad of type: N/A N/A logged in.
+2015-02-24 16:00:29 clientkeystore of type: user successfully logged in.

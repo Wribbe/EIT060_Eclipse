@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.security.KeyStore;
 
@@ -34,17 +32,29 @@ public class server extends Thread {
 
 	public server(int port) {
 		this.port = port;
-		audit = new AuditLogger("audit.txt");
+		audit = new AuditLogger("../audit.txt");
+		audit.connectAttempt("TEST", "TEST", "TEST");
 
 	}
 
 	public void run() {
 		connect();
+
+		// så länge anslutningen är öppen väntar servern på kommandon
 		while (!socket.isClosed()) {
 			System.out.println("Waiting for command...");
 
-			String command = readFromClient();
-			System.out.println(command);
+			doCommand(readFromClient());
+		}
+	}
+
+	// Här ska kommandon skrivna via terminalen behandlas.
+	// Hur tar vi hand om flera olika klienter samtidigt? hur kollar vi om de
+	// har rättigheter att göra specifikt kommando?
+	private void doCommand(String command) {
+		String[] split = command.split(" ");
+
+		if (split[0].equals("read")) {
 
 		}
 	}
@@ -120,11 +130,12 @@ public class server extends Thread {
 				char[] password = "password".toCharArray();
 
 				ks.load(new FileInputStream("stores/serverkeystore"), password); // keystore
-																			// password
-																			// (storepass)
-				ts.load(new FileInputStream("stores/servertruststore"), password); // truststore
-																			// password
-																			// (storepass)
+				// password
+				// (storepass)
+				ts.load(new FileInputStream("stores/servertruststore"),
+						password); // truststore
+				// password
+				// (storepass)
 				kmf.init(ks, password); // certificate password (keypass)
 				tmf.init(ts); // possible to use keystore as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
