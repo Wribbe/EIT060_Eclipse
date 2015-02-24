@@ -21,7 +21,9 @@ public class client extends Thread {
 	private String address;
 	private int port;
 	private boolean connected = false;
-
+	private String username = "";
+	private String password = "";
+	
 	private SSLSocket socket;
 	private SSLSocketFactory socketFactory;
 
@@ -29,10 +31,12 @@ public class client extends Thread {
 	private BufferedReader reader;
 	private BufferedWriter writer;
 
-	public client(String address, int port) {
+	public client(String address, String port, String username, String password) {
 		this.address = address;
-		this.port = port;
 		scan = new Scanner(System.in);
+		this.port = Integer.valueOf(port);
+		this.username = username;
+		this.password = password;
 	}
 
 	public void run() {
@@ -118,8 +122,17 @@ public class client extends Thread {
 			}
 		}
 	}
-
-	public static void main(String[] args) {
-		new client("localhost", 8888).start();
+	
+	public static void main(String[] args){
+		int minArguments = 4;
+		if (args.length < minArguments) {
+			System.out.println("Usage: client host port username password");
+		} else {
+			String host = args[1];
+			String port = args[2];
+			String username = args[3];
+			String password = args[4];
+			new client(host, port, username, password).start();
+		}
 	}
 }

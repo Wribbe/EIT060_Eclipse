@@ -1,0 +1,4 @@
+2015-02-24 16:13:00 TEST of type: TEST TEST logged in.
+2015-02-24 16:13:04 clientkeystore of type: user successfully logged in.
+2015-02-24 16:14:51 TEST of type: TEST TEST logged in.
+2015-02-24 16:14:56 clientkeystore of type: user successfully logged in.
