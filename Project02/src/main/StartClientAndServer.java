@@ -5,7 +5,7 @@ import java.io.IOException;
 public class StartClientAndServer {
 	public static void main(String[] args) throws InterruptedException {
 
-		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "run_client_and_server.sh");
+		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
 		ProcessBuilder runServerAndClient = new ProcessBuilder("bash", "run_client_and_server.sh");
 
 		Process generatorThread = null;
