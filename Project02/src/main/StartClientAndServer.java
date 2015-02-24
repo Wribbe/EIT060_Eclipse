@@ -11,7 +11,7 @@ public class StartClientAndServer {
 
 		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
 		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
-		ProcessBuilder runClient = new ProcessBuilder("bash", "run_client.sh", clientName, port, "username", "password");
+		ProcessBuilder runClient = new ProcessBuilder("bash", "run_client.sh", clientName, "localhost", port, "username", "password");
 
 		Process generatorThread = null;
 		Process serverThread = null;

@@ -1,8 +1,9 @@
 #!/bin/bash
 cd bin
 client_name=$1
-port=$2
-username=$3
-password=$4
+address=$2
+port=$3
+username=$4
+password=$5
 echo "mate-terminal -x java "main.$client_name" localhost $port"
-mate-terminal -x java "main.$client_name" localhost $port $username $password
+mate-terminal -x java "main.$client_name" $address $port $username $password

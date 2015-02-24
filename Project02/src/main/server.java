@@ -30,8 +30,8 @@ public class server extends Thread {
 	private BufferedReader reader;
 	private BufferedWriter writer;
 
-	public server(int port) {
-		this.port = port;
+	public server(String port) {
+		this.port = Integer.valueOf(port);
 		audit = new AuditLogger("../audit.txt");
 		audit.connectAttempt("TEST", "TEST", "TEST");
 
@@ -151,6 +151,12 @@ public class server extends Thread {
 	}
 
 	public static void main(String[] args) {
-		new server(8888).start();
+		int minArguments = 1;
+		if (args.length < minArguments) {
+			System.out.println("Usage: port");
+		} else {
+			String port = args[1];
+			new server(port);
+		}
 	}
 }
