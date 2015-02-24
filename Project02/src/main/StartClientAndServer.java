@@ -5,11 +5,16 @@ import java.io.IOException;
 public class StartClientAndServer {
 	public static void main(String[] args) throws InterruptedException {
 
+		String port = "1234";
+		String clientName = "client"; // Name of compiled class for client.
+		String serverName = "server"; // Name of compiled class for server.
+
 		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
-		ProcessBuilder runServerAndClient = new ProcessBuilder("bash", "run_client_and_server.sh");
+		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
+		ProcessBuilder runClient = new ProcessBuilder("bash", "run_client.sh", clientName, port, "username", "password");
 
 		Process generatorThread = null;
-		Process clientServerThread = null;
+		Process serverThread = null;
 
 		try {
 			generatorThread = generateCertificates.start();
@@ -24,15 +29,21 @@ public class StartClientAndServer {
 			System.exit(1);
 		}
 		try {
-			clientServerThread = runServerAndClient.start();
+			serverThread = runServer.start();
 		} catch (IOException e) {
-			System.out.println(String.format("Could not start server and client : %s",e.getMessage()));
+			System.out.println(String.format("Could not start server: %s",e.getMessage()));
 			System.exit(1);
 		}
 		try {
-			clientServerThread.waitFor();
+			runClient.start();
+		} catch (IOException e) {
+			System.out.println(String.format("Could not start client: %s",e.getMessage()));
+			System.exit(1);
+		}
+		try {
+			serverThread.waitFor();
 		} catch (InterruptedException e1) {
-			System.out.println("Error when waiting for client server thread.");
+			System.out.println("Error while waiting for server-thread.");
 			System.exit(1);
 		}
 	}
