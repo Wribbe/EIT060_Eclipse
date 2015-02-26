@@ -128,10 +128,10 @@ public class client extends Thread {
 		if (args.length < minArguments) {
 			System.out.println("Usage: client host port username password");
 		} else {
-			String host = args[1];
-			String port = args[2];
-			String username = args[3];
-			String password = args[4];
+			String host = args[0];
+			String port = args[1];
+			String username = args[2];
+			String password = args[3];
 			new client(host, port, username, password).start();
 		}
 	}

@@ -149,14 +149,15 @@ public class server extends Thread {
 		}
 		return null;
 	}
-
+	
 	public static void main(String[] args) {
+
 		int minArguments = 1;
 		if (args.length < minArguments) {
 			System.out.println("Usage: port");
 		} else {
-			String port = args[1];
-			new server(port);
+			String port = args[0];
+			new server(port).run();
 		}
 	}
 }
