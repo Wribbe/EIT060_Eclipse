@@ -27,7 +27,7 @@ public class StartClientAndServer {
 			System.out.println(String.format("Could not generate scripts: %s",e.getMessage()));
 			System.exit(1);
 		}
-		printOutput(generatorThread);
+		//printOutput(generatorThread);
 		try {
 			generatorThread.waitFor();
 		} catch (InterruptedException e1) {
@@ -40,14 +40,12 @@ public class StartClientAndServer {
 			System.out.println(String.format("Could not start server: %s",e.getMessage()));
 			System.exit(1);
 		}
-		printOutput(serverThread);
 		try {
 			clientThread = runClient.start();
 		} catch (IOException e) {
 			System.out.println(String.format("Could not start client: %s",e.getMessage()));
 			System.exit(1);
 		}
-		printOutput(clientThread);
 		try {
 			serverThread.waitFor();
 		} catch (InterruptedException e1) {
