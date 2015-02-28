@@ -51,11 +51,21 @@ public class server extends Thread {
 	// Här ska kommandon skrivna via terminalen behandlas.
 	// Hur tar vi hand om flera olika klienter samtidigt? hur kollar vi om de
 	// har rättigheter att göra specifikt kommando?
-	private void doCommand(String command) {
-		String[] split = command.split(" ");
+	private void doCommand(String commandString) {
+		String separator = " ";
+		String returnString = "";
+		String[] commandList = commandString.split(separator);
 
-		if (split[0].equals("read")) {
-
+		for (String command : commandList)  {// iterate over all commands.
+			if (command.equals("read")) {
+				System.out.println("Got read.");
+			}
+		}
+		try {
+			writer.write(returnString);
+			writer.flush();
+		} catch (IOException e) {
+			System.out.println("Could not print it?");
 		}
 	}
 
