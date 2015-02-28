@@ -2,24 +2,29 @@ package main;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class StartClientAndServer {
+	
+	private static List<ProcessBuilder> clients = new ArrayList<ProcessBuilder>();
+	private static String port = "1234";
+	
 	public static void main(String[] args) throws InterruptedException {
 
 		String port = "1234";
-		String clientName = "client"; // Name of compiled class for client.
 		String serverName = "server"; // Name of compiled class for server.
 
 		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
 		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
 		runServer.redirectErrorStream(true);
-		ProcessBuilder runClient = new ProcessBuilder("bash", "run_client.sh", clientName, "localhost", port, "username", "password");
-		runClient.redirectErrorStream(true);
+		
+		addClient("Jones","password");
+		addClient("Nobody","password");
 
 		Process generatorThread = null;
 		Process serverThread = null;
-		Process clientThread = null;
 
 		try {
 			generatorThread = generateCertificates.start();
@@ -41,7 +46,7 @@ public class StartClientAndServer {
 			System.exit(1);
 		}
 		try {
-			clientThread = runClient.start();
+			startClients();
 		} catch (IOException e) {
 			System.out.println(String.format("Could not start client: %s",e.getMessage()));
 			System.exit(1);
@@ -53,6 +58,19 @@ public class StartClientAndServer {
 			System.exit(1);
 		}
 	}
+
+	private static void addClient(String username, String password) {
+		ProcessBuilder clientProcess = new ProcessBuilder("bash", "run_client.sh", "client", "localhost", port, username, password);
+		clientProcess.redirectErrorStream(true);
+		clients.add(clientProcess);
+	}
+
+	private static void startClients() throws IOException {
+		for (ProcessBuilder client : clients) {
+			client.start();
+		}
+	}
+
 	private static void printOutput(Process proc) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		String line = null;
