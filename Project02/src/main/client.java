@@ -3,10 +3,14 @@ package main;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Scanner;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -61,21 +65,40 @@ public class client extends Thread {
 		} catch (IOException e) {
 		}
 	}
+	
+	private KeyStore loadKeyStore(String username, String passwordString) {
+		char[] password = passwordString.toCharArray();
+		String keystorePath = String.format("stores/%s",username);
+		KeyStore keystore = null;
+		try {
+			keystore = KeyStore.getInstance("JKS");
+			keystore.load(new FileInputStream(keystorePath),password);
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return keystore;
+	}
 
 	public void connect() {
 		while (!connected) {
 			try {
 				try {
 					char[] password = "password".toCharArray();
-					KeyStore ks = KeyStore.getInstance("JKS");
+					KeyStore ks = loadKeyStore(this.username, this.password);
 					KeyStore ts = KeyStore.getInstance("JKS");
 					KeyManagerFactory kmf = KeyManagerFactory
 							.getInstance("SunX509");
 					TrustManagerFactory tmf = TrustManagerFactory
 							.getInstance("SunX509");
 					SSLContext ctx = SSLContext.getInstance("TLS");
-					ks.load(new FileInputStream("stores/clientkeystore"),
-							password); // keystore password (storepass)
 					ts.load(new FileInputStream("stores/clienttruststore"),
 							password); // truststore password (storepass);
 					kmf.init(ks, password); // user password (keypass)
