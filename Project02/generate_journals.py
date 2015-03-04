@@ -1,4 +1,5 @@
 import random
+import os
 
 def make_journal(name, doctor, nurse, section):
 
@@ -11,6 +12,11 @@ def make_journal(name, doctor, nurse, section):
 
     afflictions = ["jelly tumor","cough","fever","metroid infection","tetris back","EIT060 ARP poisoning"]
     statuses = ["KO","mellow","ecstatic","sad","fine","delusional","happy","dancing"]
+
+    try:
+        os.makedirs("./journals")
+    except OSError:
+        pass
 
     filename = "journals/{}.txt".format(name)
     with open(filename,'w') as file_handler:
