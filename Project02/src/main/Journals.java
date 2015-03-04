@@ -1,6 +1,7 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,18 @@ public class Journals {
 	private Map<String, Journal> journals;
 
 	public Journals() {
-		File[] filelist = new File("journals").listFiles();
+		File[] filelist = null; 
+		try {
+			String path = new File(".").getCanonicalPath();
+			if (path.endsWith("bin")) { // the program is executed through the script.
+				filelist = new File("../journals").listFiles();
+			} else { // the program is executed through eclipse.
+				filelist = new File("journals").listFiles(); 
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		journals = new HashMap<String, Journal>();
 		for( File file : filelist ) {
 			String filename = file.toString();
