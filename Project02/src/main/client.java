@@ -23,9 +23,18 @@ import java.util.Scanner;
 public class client {
 
     public static void main(String[] args) throws Exception {
-    	String host = args[0];
-    	String username = args[2];
-    	String passwordString = args[3];
+    		String host;
+    		String username;
+    		String passwordString;
+    	if (args.length > 4) {
+    		 host = args[0];
+    		 username = args[2]+" "+args[3];
+    		 passwordString = args[4];
+     	} else {
+    		 host = args[0];
+    		 username = args[2];
+    		 passwordString = args[3];
+     	}
     	int port = -1;
         for (int i = 0; i < args.length; i++) {
             System.out.println("args[" + i + "] = " + args[i]);

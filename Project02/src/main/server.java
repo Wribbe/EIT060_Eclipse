@@ -16,6 +16,9 @@ public class server implements Runnable {
     private static int numConnectedClients = 0;
     private Journals journals = new Journals();
 
+    private String usernameKey = "OU";
+    private String accessKey = "CN";
+
     public server(ServerSocket ss) throws IOException {
         serverSocket = ss;
         newListener();
@@ -74,9 +77,6 @@ public class server implements Runnable {
     	
     	String mainCommand = input[0];
 
-    	String usernameKey = "OU";
-    	String accessKey = "CN";
-    	
     	String username = credentials.get(usernameKey);
     	String accessLevel = credentials.get(accessKey);
 
@@ -85,21 +85,34 @@ public class server implements Runnable {
     	} else if (mainCommand.equals("access")) {
     		return accessLevel;
     	} else if (mainCommand.equals("readJournal")) {
-    		String journalName = "";
-    		Journal journal;
-    		try {
-    			journalName = input[1]+" "+input[2];
-    		} catch (ArrayIndexOutOfBoundsException e) {
-    			return "The name of the journal you want to read can not be blank.";
-    		}
-    		try {
-				journal = journals.get(journalName);
-			} catch (NoSuchJournalException e) {
-				return String.format("There was no journal under the name %s",journalName);
-			}
-    		return journal.toString();
+    		return readJournalCommand(credentials, input);
     	}
     	return "Unknown command.";
+    }
+    
+    private String readJournalCommand(Map<String,String> credentials, String[] input) {
+    	String journalName = "";
+    	Journal journal;
+    	try {
+    		journalName = input[1]+" "+input[2];
+    	} catch (ArrayIndexOutOfBoundsException e) {
+    		return "The name of the journal you want to read can not be blank.";
+    	}
+    	try {
+    		journal = journals.get(journalName);
+    	} catch (NoSuchJournalException e) {
+    		return String.format("There was no journal under the name %s",journalName);
+    	}
+    	String username = credentials.get(usernameKey);
+    	String access = credentials.get(accessKey);
+    	String journalDoctor = journal.doctor;
+    	String journalNurse = journal.nurse;
+
+    	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("authority")) {
+    		return journal.toString();
+    	} else {
+    		return "You don't have permission to read this journal.";
+    	}
     }
     
     private Map<String,String> parseCredentials(String subject) {

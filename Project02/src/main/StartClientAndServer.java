@@ -22,6 +22,7 @@ public class StartClientAndServer {
 		
 		addClient("Jones","password");
 		addClient("Mandy","password");
+		addClient("Svetlana Zoran", "password");
 
 		Process generatorThread = null;
 		Process serverThread = null;
@@ -60,6 +61,8 @@ public class StartClientAndServer {
 	}
 
 	private static void addClient(String username, String password) {
+//		username = username.replace(" ","\\ ");
+//		username = String.format("\"%s\"",username);
 		ProcessBuilder clientProcess = new ProcessBuilder("bash", "run_client.sh", "client", "localhost", port, username, password);
 		clientProcess.redirectErrorStream(true);
 		clients.add(clientProcess);
