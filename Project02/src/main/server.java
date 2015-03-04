@@ -3,6 +3,10 @@ package main;
 import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.net.*;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
@@ -34,12 +38,13 @@ public class server implements Runnable {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             String clientMsg = null;
+            String responseToClient = "";
             while ((clientMsg = in.readLine()) != null) {
-			    String rev = new StringBuilder(clientMsg).reverse().toString();
                 System.out.println("received '" + clientMsg + "' from client");
-                System.out.print("sending '" + rev + "' to client...");
-				clientOutput.println(rev);
-				clientOutput.flush();
+                System.out.println("Checking for command.");
+                responseToClient = parseClientInput(clientMsg, subject);
+                System.out.println("Done checking for command.");
+                sendToClient(responseToClient, clientOutput);
                 System.out.println("done\n");
 			}
 			in.close();
@@ -53,6 +58,41 @@ public class server implements Runnable {
             e.printStackTrace();
             return;
         }
+    }
+    private void sendToClient(String message, PrintWriter clientOutput) {
+    	System.out.print("sending '" + message + "' to client...");
+    	clientOutput.println(message);
+    	clientOutput.flush();
+    }
+    
+    private String parseClientInput(String input, String subject) {
+
+    	String username = "OU";
+    	String access = "CN";
+
+    	Map<String,String> credentials = parseCredentials(subject);
+    	if (input.equals("username")) {
+    		return credentials.get(username);
+    	} else if (input.equals("access")) {
+    		return credentials.get(access);
+    	}
+    	return "Unknown command.";
+    }
+    
+    private Map<String,String> parseCredentials(String subject) {
+    	Map<String,String> returnMap = new HashMap<String,String>();
+    	ArrayList<String> assignments = new ArrayList<String>();
+    	 for(String assignmentToken : subject.split(",")) {
+    		 assignments.add(assignmentToken.trim());
+    	 }
+    	 for(String assignment : assignments ) {
+    		 String[] tokens = assignment.split("=");
+    		 if (tokens.length < 2) {
+    			 continue;
+    		 }
+    		 returnMap.put(tokens[0],tokens[1]);
+    	 }
+    	 return returnMap;
     }
 
     private void newListener() { (new Thread(this)).start(); } // calls run()
