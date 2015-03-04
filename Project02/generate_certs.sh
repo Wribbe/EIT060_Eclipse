@@ -110,8 +110,7 @@ create_signed_keystore "Svetlana Mercer" password doctor
 create_signed_keystore "Peter Miller" password nurse
 create_signed_keystore "Adam Persson" password nurse
 create_signed_keystore "Donny Nilsson" password user
-create_signed_keystore "Lisa Miller" password user
-create_signed_keystore "Mr. Black" password agency
+create_signed_keystore "Mr Black" password agency
 
 # Move the created certs to certs directory.
 rm -rf bin/stores

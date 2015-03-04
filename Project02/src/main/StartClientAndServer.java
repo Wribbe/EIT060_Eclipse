@@ -20,12 +20,13 @@ public class StartClientAndServer {
 		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
 		runServer.redirectErrorStream(true);
 		
+//		addClient("Nisse", "passsword");
 		addClient("Victoria Zoran","password");
 		addClient("Svetlana Mercer","password");
 		addClient("Peter Miller", "password");
 		addClient("Adam Persson", "password");
 		addClient("Donny Nilsson", "password");
-		addClient("Lisa Miller", "password");
+		addClient("Mr Black", "password");
 
 		Process generatorThread = null;
 		Process serverThread = null;
