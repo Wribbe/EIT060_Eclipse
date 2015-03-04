@@ -63,11 +63,15 @@ public class server implements Runnable {
     	System.out.print("sending '" + message + "' to client...");
     	clientOutput.println(message);
     	clientOutput.flush();
+    	clientOutput.flush();
     }
     
-    private String parseClientInput(String input, String subject) {
+    private String parseClientInput(String inputString, String subject) {
 
     	Map<String,String> credentials = parseCredentials(subject);
+    	String[] input = inputString.split(" ");
+    	
+    	String mainCommand = input[0];
 
     	String usernameKey = "OU";
     	String accessKey = "CN";
@@ -75,10 +79,24 @@ public class server implements Runnable {
     	String username = credentials.get(usernameKey);
     	String accessLevel = credentials.get(accessKey);
 
-    	if (input.equals("username")) {
+    	if (mainCommand.equals("username")) {
     		return username;
-    	} else if (input.equals("access")) {
+    	} else if (mainCommand.equals("access")) {
     		return accessLevel;
+    	} else if (mainCommand.equals("readJournal")) {
+    		String journalName = "";
+    		Journal journal;
+    		try {
+    			journalName = input[1]+" "+input[2];
+    		} catch (ArrayIndexOutOfBoundsException e) {
+    			return "The name of the journal you want to read can not be blank.";
+    		}
+    		try {
+				journal = journals.get(journalName);
+			} catch (NoSuchJournalException e) {
+				return String.format("There was no journal under the name %s",journalName);
+			}
+    		return journal.toString();
     	}
     	return "Unknown command.";
     }

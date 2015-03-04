@@ -10,6 +10,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.*;
+import java.util.Scanner;
 
 /*
  * This example shows how to set up a key manager to perform client
@@ -90,8 +91,11 @@ public class client {
                 out.println(msg);
                 out.flush();
                 System.out.println("done");
-
-                System.out.println("received '" + in.readLine() + "' from server\n");
+                System.out.println("received respons from server\n");
+                String[] responseTokens = in.readLine().split(";");
+                for(String line : responseTokens) {
+                	System.out.println(line);
+                }
             }
             in.close();
 			out.close();

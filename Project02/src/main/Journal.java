@@ -89,4 +89,12 @@ public class Journal {
 		System.out.println(journal.age);
 		System.out.println(journal.status);
 	}
+	
+	public String toString() {
+		StringBuilder stringbuilder = new StringBuilder();
+		for (String line : rawLines) {
+			stringbuilder.append(line+';');
+		}
+		return stringbuilder.toString();
+	}
 }
