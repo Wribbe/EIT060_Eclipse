@@ -102,6 +102,7 @@ create_truststore stores/servertruststore $password CN
 create_signed_keystore clientkeystore password user
 create_signed_keystore serverkeystore password server 
 create_signed_keystore Jones password doktor
+create_signed_keystore Mandy password user
 
 # Move the created certs to certs directory.
 rm -rf bin/stores
