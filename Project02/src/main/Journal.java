@@ -65,7 +65,7 @@ public class Journal {
 	}
 	
 	private void parseJournalBody(Map<String,String> dataMap, List<String> journalLines) {
-		String[] ignoredFields = {"Current physician","Current nurse"};
+		String[] ignoredFields = {"Current physician","Current nurse", "Division"};
 		for (String line : journalLines) {
 			if (line.startsWith("=") || line.equals("")) {
 				continue;

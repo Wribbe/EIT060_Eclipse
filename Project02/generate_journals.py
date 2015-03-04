@@ -30,6 +30,8 @@ def make_journal(name, doctor, nurse, section):
         file_handler.write("Current physician: {}\n".format(doctor))
         file_handler.write("Current nurse: {}\n".format(nurse))
         file_handler.write('\n')
+        file_handler.write("Division: {}".format(section))
+        file_handler.write('\n')
         file_handler.write("Current status: {}\n".format(random.choice(statuses)))
         file_handler.write('\n')
         file_handler.write(header+'\n')
