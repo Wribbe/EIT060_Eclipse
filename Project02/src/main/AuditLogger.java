@@ -19,9 +19,8 @@ public class AuditLogger {
 		}
 	}
 
-	public void log(String editor, String patient, String action) {
-		out.println(getDate() + " " + editor + " " + action + " for patient "
-				+ patient);
+	public void log(String string) {
+		out.println(getDate()+":"+string);
 		out.flush();
 	}
 	

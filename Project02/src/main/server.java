@@ -16,6 +16,7 @@ public class server implements Runnable {
     private static int numConnectedClients = 0;
     private Journals journals = new Journals();
     private Persons persons = new Persons();
+    private AuditLogger logger = new AuditLogger("../log.txt");
 
     private String usernameKey = "OU";
     private String accessKey = "CN";
@@ -34,6 +35,7 @@ public class server implements Runnable {
             String subject = cert.getSubjectDN().getName();
     	    numConnectedClients++;
             System.out.println("client connected");
+    		logger.log(String.format("Client connected with subject: %s",subject));
             System.out.println("client name (cert subject DN field): " + subject);
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
@@ -93,8 +95,69 @@ public class server implements Runnable {
     			return String.format("No division for %s.",username);
     		}
     		return person.division;
+    	} else if (mainCommand.equals("edit")) {
+    		return editJournalCommand(credentials, input);
+    	} else if (mainCommand.equals("remove")) {
+    		return removeJournalCommand(credentials, input);
     	}
     	return "Unknown command.";
+    }
+    private String editJournalCommand(Map<String,String> credentials, String[] input) {
+    	String journalName = "";
+    	Journal journal;
+    	try {
+    		journalName = input[1]+" "+input[2];
+    	} catch (ArrayIndexOutOfBoundsException e) {
+    		return "The name of the journal you want to edit can not be blank.";
+    	}
+    	try {
+    		journal = journals.get(journalName);
+    	} catch (NoSuchJournalException e) {
+    		return String.format("There was no journal under the name %s",journalName);
+    	}
+    	String username = credentials.get(usernameKey).trim();
+    	String access = credentials.get(accessKey);
+    	String journalDoctor = journal.doctor;
+    	String journalNurse = journal.nurse;
+    	String journalDivision = journal.division;
+    	Person person =  persons.get(username);
+    	String usernameDivison = "";
+    	if (person != null) {
+    		usernameDivison = person.division;
+    	}
+
+    	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("agency") || journalDivision.equals(usernameDivison)) {
+    		logger.log(String.format("%s edited journal: %s.",username,journalName));
+    		return String.format("Grant read-access to %s",journalName);
+    	} else {
+    		logger.log(String.format("%s tried to edit journal: %s.",username,journalName));
+    		return "You don't have permission to read this journal.";
+    	}
+    }
+
+    private String removeJournalCommand(Map<String,String> credentials, String[] input) {
+    	String journalName = "";
+    	Journal journal;
+    	String username = credentials.get(usernameKey);
+    	try {
+    		journalName = input[1]+" "+input[2];
+    	} catch (ArrayIndexOutOfBoundsException e) {
+    		return "The name of the journal you want to remove can not be blank.";
+    	}
+    	try {
+    		journal = journals.get(journalName);
+    	} catch (NoSuchJournalException e) {
+    		return String.format("There was no journal under the name %s",journalName);
+    	}
+    	String access = credentials.get(accessKey);
+
+    	if(access.equals("agency")) {
+    		logger.log(String.format("%s removed journal: %s.",username,journalName));
+    		return String.format("removed %s",journalName);
+    	} else {
+    		logger.log(String.format("%s tried to remove journal: %s.",username,journalName));
+    		return "You don't have permission to remove this journal.";
+    	}
     }
     
     private String readJournalCommand(Map<String,String> credentials, String[] input) {
@@ -123,8 +186,10 @@ public class server implements Runnable {
     	String patient = journal.patient;
 
     	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("agency") || journalDivision.equals(usernameDivison) || username.equals(patient)) {
+    		logger.log(String.format("%s read journal: %s.",username,journalName));
     		return journal.toString();
     	} else {
+    		logger.log(String.format("%s tried to read journal: %s.",username,journalName));
     		return "You don't have permission to read this journal.";
     	}
     }
