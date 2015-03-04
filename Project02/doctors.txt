@@ -1,7 +1,7 @@
-Charlie Svensson
-Sephirot Mercer
-Mary Persson
-Jones Miller
-Ann Nilsson
-Svetlana Zoran
-Peter Hultin
+Charlie Hultin;A
+Sephirot Nilsson;B
+Mary Persson;B
+Jones Zoran;B
+Ann Svensson;B
+Svetlana Mercer;B
+Peter Miller;A

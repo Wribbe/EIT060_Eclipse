@@ -15,6 +15,7 @@ public class server implements Runnable {
     private ServerSocket serverSocket = null;
     private static int numConnectedClients = 0;
     private Journals journals = new Journals();
+    private Persons persons = new Persons();
 
     private String usernameKey = "OU";
     private String accessKey = "CN";
@@ -84,7 +85,7 @@ public class server implements Runnable {
     		return username;
     	} else if (mainCommand.equals("access")) {
     		return accessLevel;
-    	} else if (mainCommand.equals("readJournal")) {
+    	} else if (mainCommand.equals("read")) {
     		return readJournalCommand(credentials, input);
     	}
     	return "Unknown command.";
@@ -107,8 +108,15 @@ public class server implements Runnable {
     	String access = credentials.get(accessKey);
     	String journalDoctor = journal.doctor;
     	String journalNurse = journal.nurse;
+    	String journalDivision = journal.division;
+    	Person person =  persons.get(username);
+    	String usernameDivison = "";
+    	if (person != null) {
+    		usernameDivison = person.division;
+    	}
+    	String patient = journal.patient;
 
-    	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("authority")) {
+    	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("agency") || journalDivision.equals(usernameDivison) || username.equals(patient)) {
     		return journal.toString();
     	} else {
     		return "You don't have permission to read this journal.";

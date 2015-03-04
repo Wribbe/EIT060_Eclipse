@@ -40,11 +40,8 @@ public class Journals {
 	}
 	public static void main(String[] args) {
 		Journals journals = new Journals();
-		try {
-			System.out.println(journals.get("Batman Hultin").patient);
-			System.out.println(journals.get("Patient that does not exist"));
-		} catch (NoSuchJournalException e) {
-			System.out.println(String.format("No journal found: %s.",e.getMessage()));
+		for (String name : journals.journals.keySet() ) {
+			System.out.println(name);
 		}
 	}
 }

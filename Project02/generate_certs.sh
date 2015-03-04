@@ -99,12 +99,19 @@ create_truststore stores/servertruststore $password CN
 # create_signed_keystore username password user-type.
 # creates a keystorefile named {username} signed by CA with CN={user-type}.
 
+username="$1"
+password="$2"
+access="$3"
+
 create_signed_keystore clientkeystore password user
 create_signed_keystore serverkeystore password server
-create_signed_keystore Jones password doctor
-create_signed_keystore Mandy password user
-create_signed_keystore "Svetlana Zoran" password doctor
-
+create_signed_keystore "Victoria Zoran" password doctor
+create_signed_keystore "Svetlana Mercer" password doctor
+create_signed_keystore "Peter Miller" password nurse
+create_signed_keystore "Adam Persson" password nurse
+create_signed_keystore "Donny Nilsson" password user
+create_signed_keystore "Lisa Miller" password user
+create_signed_keystore "Mr. Black" password agency
 
 # Move the created certs to certs directory.
 rm -rf bin/stores

@@ -1,7 +1,7 @@
-Daniel Mercer
-Viktoria Zoran
-Susann Persson
-Molly Miller
-Adam Svensson
-Victor Nilsson
-Condrad Hultin
+Daniel Nilsson;B
+Viktoria Zoran;A
+Susann Mercer;B
+Molly Hultin;B
+Adam Persson;B
+Victor Miller;A
+Condrad Svensson;B

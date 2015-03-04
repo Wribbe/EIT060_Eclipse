@@ -37,10 +37,15 @@ def make_journal(name, doctor, nurse, section):
         file_handler.write(header+'\n')
 
 doctors  = open("doctors.txt").readlines()
+doctor_dict = {}
+for line in doctors:
+    name, division = line.split(";")
+    doctor_dict[name.strip()] = division.strip()
+
 nurses = open("nurses.txt").readlines()
 patients = open("patients.txt").readlines()
 sections = ['A','B']
 
-for name, doctor, nurse in zip(patients,doctors,nurses):
+for name, doctor, nurse in zip(patients,doctor_dict,nurses):
     section = random.choice(sections)
-    make_journal(name.strip(),doctor.strip(),nurse.strip(), section)
+    make_journal(name.strip(),doctor.strip(),nurse.strip(), doctor_dict[doctor])
