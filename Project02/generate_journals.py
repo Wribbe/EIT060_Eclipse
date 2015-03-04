@@ -1,6 +1,6 @@
 import random
 
-def make_journal(name, doctor, nurse): 
+def make_journal(name, doctor, nurse, section):
 
     header_size = 70
     subheader_size = 5
@@ -12,9 +12,9 @@ def make_journal(name, doctor, nurse):
     afflictions = ["jelly tumor","cough","fever","metroid infection","tetris back","EIT060 ARP poisoning"]
     statuses = ["KO","mellow","ecstatic","sad","fine","delusional","happy","dancing"]
 
-    filename = "{}.txt".format(name)
+    filename = "journals/{}.txt".format(name)
     with open(filename,'w') as file_handler:
-        file_handler.write("{},{},{}\n".format(name,doctor,nurse))
+        file_handler.write("{},{},{},{}\n".format(name,doctor,nurse,section))
         file_handler.write(header+'\n')
         file_handler.write("{}{}Journal for: {}\n".format(subheader,subheader_padding,name))
         file_handler.write(header+'\n')
@@ -28,9 +28,11 @@ def make_journal(name, doctor, nurse):
         file_handler.write('\n')
         file_handler.write(header+'\n')
 
-doctors  = ["Charlie","Sephirot","Mary","Jones","Ann","Svetlana","Peter"]
-nurses = ["Daniel","Viktoria","Susann","Molly","Adam","Victor","Condrad"]
-patients = ["Mario","Emma","Lisa","Kurt","Tommy","Batman","Donny"]
+doctors  = open("doctors.txt").readlines()
+nurses = open("nurses.txt").readlines()
+patients = open("patients.txt").readlines()
+sections = ['A','B']
 
 for name, doctor, nurse in zip(patients,doctors,nurses):
-    make_journal(name,doctor,nurse)
+    section = random.choice(sections)
+    make_journal(name.strip(),doctor.strip(),nurse.strip(), section)
