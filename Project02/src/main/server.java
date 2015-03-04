@@ -99,6 +99,8 @@ public class server implements Runnable {
     		return editJournalCommand(credentials, input);
     	} else if (mainCommand.equals("remove")) {
     		return removeJournalCommand(credentials, input);
+    	} else if (mainCommand.equals("new")) {
+    		return newJournalCommand(credentials, input);
     	}
     	return "Unknown command.";
     }
@@ -191,6 +193,20 @@ public class server implements Runnable {
     	} else {
     		logger.log(String.format("%s tried to read journal: %s.",username,journalName));
     		return "You don't have permission to read this journal.";
+    	}
+    }
+
+    private String newJournalCommand(Map<String,String> credentials, String[] input) {
+    	
+    	String access = credentials.get(accessKey);
+    	String username = credentials.get(usernameKey);
+
+    	if(access.equals("agency") || access.equals("agency")) {
+    		logger.log(String.format("%s created new journal",username));
+    		return "Created new journal.";
+    	} else {
+    		logger.log(String.format("%s tried to create a new journal.",username));
+    		return "You don't have permission to create this journal.";
     	}
     }
     
