@@ -67,14 +67,18 @@ public class server implements Runnable {
     
     private String parseClientInput(String input, String subject) {
 
-    	String username = "OU";
-    	String access = "CN";
-
     	Map<String,String> credentials = parseCredentials(subject);
+
+    	String usernameKey = "OU";
+    	String accessKey = "CN";
+    	
+    	String username = credentials.get(usernameKey);
+    	String accessLevel = credentials.get(accessKey);
+
     	if (input.equals("username")) {
-    		return credentials.get(username);
+    		return username;
     	} else if (input.equals("access")) {
-    		return credentials.get(access);
+    		return accessLevel;
     	}
     	return "Unknown command.";
     }
