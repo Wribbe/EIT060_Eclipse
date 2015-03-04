@@ -11,6 +11,7 @@ import java.util.Map;
 public class Journal {
 	
 	public String doctor,nurse,patient,section,affliction,age,status,division;
+	public List<String> rawLines = new ArrayList<String>();
 	
 	public Journal(String patient, String doctor, String nurse) {
 		this.patient = patient;
@@ -42,6 +43,7 @@ public class Journal {
 			System.out.println(String.format("Could not read %s.",filename));
 			returnList = new ArrayList<String>();
 		}
+		this.rawLines = returnList;
 		return returnList;
 	}
 	
