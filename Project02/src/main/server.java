@@ -78,8 +78,8 @@ public class server implements Runnable {
     	
     	String mainCommand = input[0];
 
-    	String username = credentials.get(usernameKey);
-    	String accessLevel = credentials.get(accessKey);
+    	String username = credentials.get(usernameKey).trim();
+    	String accessLevel = credentials.get(accessKey).trim();
 
     	if (mainCommand.equals("username")) {
     		return username;
@@ -87,6 +87,12 @@ public class server implements Runnable {
     		return accessLevel;
     	} else if (mainCommand.equals("read")) {
     		return readJournalCommand(credentials, input);
+    	} else if (mainCommand.equals("division")) {
+    		Person person = persons.get(username);
+    		if (person == null) {
+    			return String.format("No division for %s.",username);
+    		}
+    		return person.division;
     	}
     	return "Unknown command.";
     }
@@ -104,7 +110,7 @@ public class server implements Runnable {
     	} catch (NoSuchJournalException e) {
     		return String.format("There was no journal under the name %s",journalName);
     	}
-    	String username = credentials.get(usernameKey);
+    	String username = credentials.get(usernameKey).trim();
     	String access = credentials.get(accessKey);
     	String journalDoctor = journal.doctor;
     	String journalNurse = journal.nurse;
@@ -143,6 +149,7 @@ public class server implements Runnable {
 
     public static void main(String args[]) {
         System.out.println("\nServer Started\n");
+
         int port = -1;
         if (args.length >= 1) {
             port = Integer.parseInt(args[0]);

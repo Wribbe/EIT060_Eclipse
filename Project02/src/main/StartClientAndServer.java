@@ -20,7 +20,6 @@ public class StartClientAndServer {
 		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
 		runServer.redirectErrorStream(true);
 		
-//		addClient("Nisse", "passsword");
 		addClient("Victoria Zoran","password");
 		addClient("Svetlana Mercer","password");
 		addClient("Peter Miller", "password");
