@@ -21,7 +21,7 @@ public class StartClientAndServer {
 		runServer.redirectErrorStream(true);
 		
 		addClient("Jones","password");
-		addClient("Nobody","password");
+		addClient("Mandy","password");
 
 		Process generatorThread = null;
 		Process serverThread = null;
