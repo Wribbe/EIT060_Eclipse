@@ -105,11 +105,31 @@ access="$3"
 
 create_signed_keystore clientkeystore password user
 create_signed_keystore serverkeystore password server
-create_signed_keystore "Victoria Zoran" password doctor
+
+create_signed_keystore "Charlie Hultin" password doctor
+create_signed_keystore "Sephirot Nilsson" password doctor
+create_signed_keystore "Mary Persson" password doctor
+create_signed_keystore "Jones Zoran" password doctor
+create_signed_keystore "Ann Svensson" password doctor
 create_signed_keystore "Svetlana Mercer" password doctor
-create_signed_keystore "Peter Miller" password nurse
+create_signed_keystore "Peter Miller" password doctor
+
+create_signed_keystore "Daniel Nilsson" password nurse
+create_signed_keystore "Viktoria Zoran" password nurse
+create_signed_keystore "Susann Mercer" password nurse
+create_signed_keystore "Molly Hultin" password nurse
 create_signed_keystore "Adam Persson" password nurse
+create_signed_keystore "Victor Miller" password nurse
+create_signed_keystore "Condrad Svensson" password nurse
+
+create_signed_keystore "Mario Svensson" password user
+create_signed_keystore "Emma Persson" password user
+create_signed_keystore "Lisa Miller" password user
+create_signed_keystore "Kurt Mercer" password user
+create_signed_keystore "Tommy Zoran" password user
+create_signed_keystore "Batman Hultin" password user
 create_signed_keystore "Donny Nilsson" password user
+
 create_signed_keystore "Mr Black" password agency
 
 # Move the created certs to certs directory.
