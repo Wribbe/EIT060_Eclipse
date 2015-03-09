@@ -13,35 +13,55 @@ public class StartClientAndServer {
 	
 	public static void main(String[] args) throws InterruptedException {
 
-		String port = "1234";
-		String serverName = "server"; // Name of compiled class for server.
+		Boolean rebuildCerts = true;
+		Boolean recreateJournals = true;
 
-		ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
-		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", serverName, port);
+		String port = "1234";
+
+		ProcessBuilder runServer = new ProcessBuilder("bash", "run_server.sh", port);
 		runServer.redirectErrorStream(true);
 		
-		addClient("Victoria Zoran","password");
-		addClient("Svetlana Mercer","password");
-		addClient("Peter Miller", "password");
-		addClient("Adam Persson", "password");
-		addClient("Donny Nilsson", "password");
+//		addClient("Victoria Zoran","password");
+//		addClient("Svetlana Mercer","password");
+//		addClient("Peter Miller", "password");
+//		addClient("Adam Persson", "password");
+//		addClient("Donny Nilsson", "password");
 		addClient("Mr Black", "password");
 
 		Process generatorThread = null;
 		Process serverThread = null;
+		Process journalThread = null;
 
-		try {
-			generatorThread = generateCertificates.start();
-		} catch (IOException e) {
-			System.out.println(String.format("Could not generate scripts: %s",e.getMessage()));
-			System.exit(1);
+		if(rebuildCerts) {
+			try {
+				ProcessBuilder generateCertificates = new ProcessBuilder("bash", "generate_certs.sh");
+				generatorThread = generateCertificates.start();
+			} catch (IOException e) {
+				System.out.println(String.format("Could not generate scripts: %s",e.getMessage()));
+				System.exit(1);
+			}
+			printOutput(generatorThread);
+			try {
+				generatorThread.waitFor();
+			} catch (InterruptedException e1) {
+				System.out.println("Error when waiting for generator.");
+				System.exit(1);
+			}
 		}
-		//printOutput(generatorThread);
-		try {
-			generatorThread.waitFor();
-		} catch (InterruptedException e1) {
-			System.out.println("Error when waiting for generator.");
-			System.exit(1);
+		if(recreateJournals) {
+			ProcessBuilder createJournals = new ProcessBuilder("python", "generate_journals.py");
+			try {
+				journalThread = createJournals.start();
+			} catch (IOException e) {
+				System.out.println(String.format("Could not create journals: %s",e.getMessage()));
+				System.exit(1);
+			}
+			try {
+				journalThread.waitFor();
+			} catch (InterruptedException e1) {
+				System.out.println("Error when waiting for journals.");
+				System.exit(1);
+			}
 		}
 		try {
 			serverThread = runServer.start();
@@ -50,8 +70,8 @@ public class StartClientAndServer {
 			System.exit(1);
 		}
 		try {
-			startClients();
-		} catch (IOException e) {
+				startClients();
+			} catch (IOException e) {
 			System.out.println(String.format("Could not start client: %s",e.getMessage()));
 			System.exit(1);
 		}
@@ -66,7 +86,7 @@ public class StartClientAndServer {
 	private static void addClient(String username, String password) {
 //		username = username.replace(" ","\\ ");
 //		username = String.format("\"%s\"",username);
-		ProcessBuilder clientProcess = new ProcessBuilder("bash", "run_client.sh", "client", "localhost", port, username, password);
+		ProcessBuilder clientProcess = new ProcessBuilder("bash", "run_client.sh", port, username, password);
 		clientProcess.redirectErrorStream(true);
 		clients.add(clientProcess);
 	}
