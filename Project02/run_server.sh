@@ -1,4 +1,4 @@
-server_name=$1
-port=$2
+#server_name=$1
+port=$1
 cd bin
-mate-terminal -e "bash -c \"java "main.$server_name" $port; exec bash\""
+mate-terminal -e "bash -c \"java "main.server" $port; exec bash\""
