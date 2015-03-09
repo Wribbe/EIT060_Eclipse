@@ -32,7 +32,7 @@ public class server implements Runnable {
             newListener();
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
-            String subject = cert.getSubjectDN().getName();
+            String subject = cert.getSubjectDN().getName(); // Get client subject line.
     	    numConnectedClients++;
             System.out.println("client connected");
     		logger.log(String.format("Client connected with subject: %s",subject));
@@ -49,7 +49,7 @@ public class server implements Runnable {
             while ((clientMsg = in.readLine()) != null) {
                 System.out.println("received '" + clientMsg + "' from client");
                 System.out.println("Checking for command.");
-                responseToClient = parseClientInput(clientMsg, subject);
+                responseToClient = parseClientInput(clientMsg, subject); // Parse input
                 System.out.println("Done checking for command.");
                 sendToClient(responseToClient, clientOutput);
                 System.out.println("done\n");
@@ -72,12 +72,12 @@ public class server implements Runnable {
     	clientOutput.flush();
     	clientOutput.flush();
     }
-    
+
     private String parseClientInput(String inputString, String subject) {
 
     	Map<String,String> credentials = parseCredentials(subject);
     	String[] input = inputString.split(" ");
-    	
+
     	String mainCommand = input[0];
 
     	String username = credentials.get(usernameKey).trim();
@@ -161,7 +161,7 @@ public class server implements Runnable {
     		return "You don't have permission to remove this journal.";
     	}
     }
-    
+
     private String readJournalCommand(Map<String,String> credentials, String[] input) {
     	String journalName = "";
     	Journal journal;
@@ -197,7 +197,7 @@ public class server implements Runnable {
     }
 
     private String newJournalCommand(Map<String,String> credentials, String[] input) {
-    	
+
     	String access = credentials.get(accessKey);
     	String username = credentials.get(usernameKey);
 
@@ -209,7 +209,7 @@ public class server implements Runnable {
     		return "You don't have permission to create this journal.";
     	}
     }
-    
+
     private Map<String,String> parseCredentials(String subject) {
     	Map<String,String> returnMap = new HashMap<String,String>();
     	ArrayList<String> assignments = new ArrayList<String>();

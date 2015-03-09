@@ -10,8 +10,8 @@ Example:
     java main.server 1234
 
     // antother terminal
-    cd bin 
-    java main.client localhost 1234 username password
+    cd bin
+    java main.client localhost 1234 Victoria Zoran password
 
 Available usernames are:
 
@@ -35,3 +35,4 @@ Client commands:
     remove -- remove journal
     divison -- show assigned division
     new -- create a new journal
+    quit -- exits program
