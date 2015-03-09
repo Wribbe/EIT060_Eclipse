@@ -1,7 +1,7 @@
 To run the StartClientAndServer class in Eclipse, mate-terminal needs to be installed an available.
 
-All the files can be run manually by fist generating all necessary files by running StartClientAndServer.java form
-Eclipse and then run the client and server from bin/.
+All the files can be run manually by first generating all necessary files by running init.sh
+and then run the client and server from bin/.
 
 Example:
 
