@@ -101,6 +101,17 @@ public class server implements Runnable {
     		return removeJournalCommand(credentials, input);
     	} else if (mainCommand.equals("new")) {
     		return newJournalCommand(credentials, input);
+    	} else if (mainCommand.equals("all")) {
+                input = new String[3];
+                input[1] = "Batman";
+                input[2] = "Hultin";
+                return String.format("%s;%s;%s;%s;%s;%s",
+    		username,
+    		accessLevel,
+    		readJournalCommand(credentials, input),
+    		editJournalCommand(credentials, input),
+    		removeJournalCommand(credentials, input),
+    		newJournalCommand(credentials, input));
     	}
     	return "Unknown command.";
     }
@@ -130,10 +141,10 @@ public class server implements Runnable {
 
     	if(username.equals(journalDoctor) || username.equals(journalNurse) || access.equals("agency") || journalDivision.equals(usernameDivison)) {
     		logger.log(String.format("%s edited journal: %s.",username,journalName));
-    		return String.format("Grant read-access to %s",journalName);
+    		return String.format("Grant edit-access to %s",journalName);
     	} else {
     		logger.log(String.format("%s tried to edit journal: %s.",username,journalName));
-    		return "You don't have permission to read this journal.";
+    		return "You don't have permission to edit this journal.";
     	}
     }
 
